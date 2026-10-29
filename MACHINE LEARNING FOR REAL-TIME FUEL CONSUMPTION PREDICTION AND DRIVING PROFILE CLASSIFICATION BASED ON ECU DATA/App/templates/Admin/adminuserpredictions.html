@@ -1,0 +1,80 @@
+{% extends 'Admin/adminbase.html' %}
+
+{% block contents %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Admin User Predictions</h1>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Year</th>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>Vehicle Class</th>
+                    <th>Engine Size</th>
+                    <th>Cylinders</th>
+                    <th>Transmission</th>
+                    <th>Fuel Type</th>
+                    <th>HWY</th>
+                    <th>Comb</th>
+                    <th>Predicted Value</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prediction in page_obj %}
+                    <tr>
+                        <td>{{ prediction.id }}</td>
+                        <td>{{ prediction.year }}</td>
+                        <td>{{ prediction.make }}</td>
+                        <td>{{ prediction.model }}</td>
+                        <td>{{ prediction.vehicle_class }}</td>
+                        <td>{{ prediction.engine_size }}</td>
+                        <td>{{ prediction.cylinders }}</td>
+                        <td>{{ prediction.transmission }}</td>
+                        <td>{{ prediction.fuel_type }}</td>
+                        <td>{{ prediction.hwy }}</td>
+                        <td>{{ prediction.comb }}</td>
+                        <td>{{ prediction.predicted_value }}</td>
+                        <td>{{ prediction.created_at }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination Links -->
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

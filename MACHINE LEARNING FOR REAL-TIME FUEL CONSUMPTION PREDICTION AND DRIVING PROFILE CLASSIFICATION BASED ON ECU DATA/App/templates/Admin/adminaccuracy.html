@@ -1,0 +1,58 @@
+{% extends 'Admin/adminbase.html' %}
+
+{% block contents %}
+
+<section class="container py-5">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="text-center mb-4">Upload Dataset to Train Models</h1>
+      <form method="POST" enctype="multipart/form-data" class="mb-5" onsubmit="showLoader()">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="dataset" class="form-label">Upload CSV Dataset:</label>
+          <input type="file" id="dataset" name="dataset" accept=".csv" class="form-control" required>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+
+      <div id="loader" class="text-center d-none">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p>Please wait while we process your request...</p>
+      </div>
+
+      {% if results %}
+      <h2 class="text-center mb-4">Model Accuracies</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Model</th>
+              <th scope="col">MSE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for result in results %}
+            <tr>
+              <td>{{ result.Model }}</td>
+              <td>{{ result.MSE }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+  function showLoader() {
+    document.getElementById('loader').classList.remove('d-none');
+  }
+</script>
+
+{% endblock %}
